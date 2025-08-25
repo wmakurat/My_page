@@ -68,25 +68,24 @@ class BaseTrainer(ABC):
 
     @abstractmethod
     def split_data_for_cv(self, i):
-        """Zwraca: X_tr, X_va, y_tr, y_va (y_* może być None w unsupervised)."""
+        """Returns: X_tr, X_va, y_tr, y_va (y_* can be None in unsupervised)."""
         ...
 
     @abstractmethod
     def make_features(self, X_tr, X_va, params):
         """
-        Fit na train, transform na val.
-        Zwraca: Z_tr, Z_va, preproc  (preproc to np. (pca, encoder, scaler), zależnie od implementacji).
+        Returns: Z_tr, Z_va, preproc  (preproc equals pca).
         """
         ...
 
     @abstractmethod
     def fit_test(self, clf, Z_tr, y_tr, Z_va, y_va, params):
-        """Zwraca scalar: im większy, tym lepiej."""
+        """Returns scalar: the bigger the better."""
         ...
 
     @abstractmethod
     def final_refit(self, best_params):
-        """Dopasuj finalnie na CAŁOŚCI; zwróć (best_model, best_preproc)."""
+        """Final fit for entire dataset; returns (best_model, best_preproc)."""
         ...
 
     def _ensure_file(self):
@@ -211,7 +210,7 @@ class Universal_trainer(ABC):
             Z_cat = df[self.categorical_cols]
             Z = np.concatenate([Z_num, Z_cat], axis=1)
         else:
-            raise ValueError("cat_mode musi być 'drop' albo 'onehot'.")
+            raise ValueError("cat_mode bust be 'drop' albo 'onehot'.")
 
         return Z, pca_out
     
